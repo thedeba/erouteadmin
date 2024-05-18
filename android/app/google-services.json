@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "565521565585",
+    "firebase_url": "https://deb-eroute-default-rtdb.firebaseio.com",
+    "project_id": "deb-eroute",
+    "storage_bucket": "deb-eroute.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565521565585:android:396bbe7cdffe084f287c30",
+        "android_client_info": {
+          "package_name": "com.example.eroute"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVIjF9KLUizqbKQ18xmtRSq5ec7I51XR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565521565585:android:5489e36939b3facd287c30",
+        "android_client_info": {
+          "package_name": "com.example.erouteadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVIjF9KLUizqbKQ18xmtRSq5ec7I51XR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
