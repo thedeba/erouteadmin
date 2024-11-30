@@ -28,16 +28,21 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[900],
-      appBar: MyAppBar,
+      appBar: MyAppBar(),
       body: _navigationItem[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabItem,
         currentIndex: selectedIndex,
         backgroundColor: Colors.grey[800],
+        selectedItemColor: Colors.blueAccent,
+        unselectedIconTheme: IconThemeData(color: Colors.grey[400]),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+
         items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile')
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
       ],
         
       ),

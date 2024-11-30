@@ -1,21 +1,21 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class NameTile extends StatefulWidget {
   final String name;
   final String route;
+  final int remainingTime;
   final Function(BuildContext)? deleteFunction;
-  final DocumentReference documentReference;
 
   const NameTile({
     Key? key,
     required this.name,
     required this.route,
+    required this.remainingTime,
     this.deleteFunction,
-    required this.documentReference,
   }) : super(key: key);
 
   @override
@@ -24,41 +24,40 @@ class NameTile extends StatefulWidget {
 
 class _NameTileState extends State<NameTile> {
   late Timer _timer;
-  int _secondsRemaining = 630;
+  int _secondsRemaining;
+  final DatabaseReference dbRef = FirebaseDatabase.instance.ref('Student_Bus');
+
+  _NameTileState() : _secondsRemaining = 0;
 
   @override
   void initState() {
     super.initState();
-    // Start the timer when the widget is initialized
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_secondsRemaining > 0) {
-          _secondsRemaining--;
-        } else {
-          _timer.cancel(); // Cancel the timer when it reaches 0
-          // Automatically delete the tile when timer reaches zero
-          if (widget.deleteFunction != null) {
-            widget.deleteFunction!(context);
-          }
-        }
-      });
-    });
+    _secondsRemaining = widget.remainingTime;
+    startTimer();
   }
 
   void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_secondsRemaining > 0) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+      if (_secondsRemaining > 0) {
+        setState(() {
           _secondsRemaining--;
-        } else {
-          _timer.cancel();
-          if (widget.deleteFunction != null) {
-            widget.deleteFunction!(context);
-            // Delete the Firestore document when timer reaches 0
-            widget.documentReference.delete();
-          }
+        });
+
+        // Update the remaining time in Firebase
+        await dbRef.child(widget.name).update({
+          'Remaining_Time': _secondsRemaining,
+        });
+      } else {
+        _timer.cancel();
+
+        // Delete the bus entry when the timer reaches zero
+        await dbRef.child(widget.name).remove();
+
+        // Call delete function if provided
+        if (widget.deleteFunction != null) {
+          widget.deleteFunction!(context);
         }
-      });
+      }
     });
   }
 
@@ -107,28 +106,21 @@ class _NameTileState extends State<NameTile> {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  // Implement custom time setting if needed
-                },
-                child: Container(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Within',
-                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                      ),
-                      Text(
-                        '${_secondsRemaining ~/ 60} : ${_secondsRemaining % 60}',
-                        style: TextStyle(
-                          color: Colors.grey[500],
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+              Column(
+                children: [
+                  Text(
+                    'Within',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
-                ),
+                  Text(
+                    '${_secondsRemaining ~/ 60} : ${_secondsRemaining % 60}',
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

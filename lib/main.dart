@@ -1,5 +1,6 @@
 import 'package:erouteadmin/firebase_options.dart';
-import 'package:erouteadmin/pages/auth_page.dart';
+import 'package:erouteadmin/user_screen/constant.dart';
+import 'package:erouteadmin/user_screen/mynavigationbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'eRouteAdmin',
+      title: 'eRoute',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           elevation: 9,
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         ),
         disabledColor: Colors.white,
       ),
-      home: AuthPage(),
+      navigatorKey: navigatorKey,
+      home: const MyNavigationBar(),
     );
   }
 }

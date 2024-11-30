@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Use a compatible Android Gradle Plugin version for Java 21
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath 'com.google.gms:google-services:4.3.15' // or the latest version
+
+    }
+}
+
 allprojects {
     repositories {
         google()
